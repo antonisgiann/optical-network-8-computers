@@ -1,4 +1,4 @@
-the program is a simulation of an optical network
+the program is a simulation of an optical network with 8 computers.The description of the network follows
 
 Description of the program:
 
