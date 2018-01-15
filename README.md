@@ -1,4 +1,4 @@
-the program is a simulation of an optical network
+the program is a simulation of an optical network with 8 computers.The description of the network follows
 
 Description of the program:
 
@@ -13,11 +13,6 @@ that use the same wave length send their packages in the same slot a collision o
 destroyed,both packages will stay in their perspective buffer and they will try to be retrasmitted at the next 
 slot.
 
-
-Το προγραμμα ειναι γραμμενο σε python 3.6.4 .Το εκτελεσιμο αρχειο ειναι το simulator.py το οποιο δεχεται και 
-optinal arguments για καλυτερο ελεγχο του προγραμματος.Τα optional arguments που δεχεται ειναι για ελεγχο του χρονου
-προσομοιωσης του δικτυου και του χρονου διαρκειας ενος slot.Οι default τιμες ειναι 0.01 για το slot και 10(sec) για το
-χρονο προσομοιωσης.
-
+To run this programm run the simulator.py.You can specify two optinal arguments in the command line.One is to change the simulation time(default is 10 sec) and the other is to change the time slot(default is 0.01 sec).Use the -h option to take more information about how to use the command line arguments.
 
 
