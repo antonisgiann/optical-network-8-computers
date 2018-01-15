@@ -1,9 +1,7 @@
 import threading
-import numpy as np
 import station
 import time
 import random
-from Mythread import Mythread
 
 """
 this is the actual implementation of the network
@@ -15,10 +13,9 @@ this is the actual implementation of the network
 SENT_PROB = 0.5
 
 
-
 #initialize all the workstations
 
-stations = [station.station(5,i) for i in range(8)]
+stations = [ station.station(5,i) for i in range(8)]
 
 
 def auxiliary():
@@ -27,14 +24,14 @@ def auxiliary():
     """
     pass
 
-def packagecreation(probability):
+def packagecreation(stations,probability,slot):
     """
     function that handles the creation of the packages at each time slot
     """
     for station in stations :
-        station.createpack(probability) 
+        station.createpack(probability,slot) 
 
-def packageshipment(probability):
+def packageshipment(stations,probability,slot):
     """
     function that handles the package shipment
     from each station with collision detection
@@ -50,30 +47,32 @@ def packageshipment(probability):
         if  stations[i].WANT_TO_SENT and stations[i+1].WANT_TO_SENT : 
             stations[i].WANT_TO_SENT = False
             stations[i+1].WANT_TO_SENT = False
-            continue
         else:
             if stations[i].WANT_TO_SENT : 
-                stations[i].sendpack()
+                stations[i].sendpack(slot)
                 stations[i].WANT_TO_SENT = False
             elif stations[i+1].WANT_TO_SENT : 
-                stations[i+1].sendpack()
+                stations[i+1].sendpack(slot)
                 stations[i+1].WANT_TO_SENT = False
 
 
 #the main function of the program
 def main(SIM_TIME,CREATION_CHANCE,TIME_SLOT=0.1):
     #mark the start of the simulation 
+    for station in stations :
+        station.buffer=[]
+        station.delay['delay']=0
+        station.delay['packages']=0
     start = time.time()
-    
+    slot=0
     #start the simulation itself
     while time.time() - start < float(SIM_TIME) :
-        slot = threading.Timer(TIME_SLOT,auxiliary) 
-        slot.start()
-        th1 = Mythread(packageshipment,SENT_PROB)
-        th2 = Mythread(packagecreation,CREATION_CHANCE)
-        th1.start()
-        th2.start()
-        slot.join()
+        timer = threading.Timer(TIME_SLOT,auxiliary) 
+        slot += 1
+        timer.start()
+        packageshipment(stations,SENT_PROB,slot)
+        packagecreation(stations,CREATION_CHANCE,slot)
+        timer.join()
     
     #calculate the network total delay for the packages
     totaldelay = 0
@@ -88,6 +87,6 @@ def main(SIM_TIME,CREATION_CHANCE,TIME_SLOT=0.1):
     for station in stations:
         total_packages += station.delay['packages']
     #calculate the thoughput of the network
-    throughput = total_packages/(SIM_TIME/TIME_SLOT)
+    throughput = total_packages/(slot)
 
     return (network_total_delay,throughput)

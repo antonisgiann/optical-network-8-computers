@@ -33,14 +33,14 @@ plt.subplot(2,1,1)
 plt.plot(chances,sample,'ro')
 plt.ylabel('avg pack delay')
 plt.xlabel('p')
-plt.axis([0,1.1,0,sample[-1]+0.2])
+plt.axis([0,1.1,0,sample[-1]+2])
 
 #the plot for the avg package delay and the throughputs for every possible p
 plt.subplot(2,1,2)
 plt.plot(throughputs,sample,'bo')
 plt.ylabel('avg pack delay')
 plt.xlabel('throughput')
-plt.axis([throughputs[0]-5,throughputs[-1]+5,0,sample[-1]+0.5])
+plt.axis([throughputs[0]+0.1,throughputs[-1]+0.5,0,sample[-1]+1.5])
 
 #show the plots
 plt.show()
